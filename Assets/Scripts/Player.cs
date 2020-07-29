@@ -1,49 +1,53 @@
 ﻿//#define IS_GROUNDED
 //#if UNITY_STANDALONE, UNITY_IOS
 
+using InputSystem;
 using UnityEngine;
 
-namespace InputSystem
+public class Player : MonoBehaviour
 {
+    private const float SpeedMultiplier = 5F;
 
-    public class Player : MonoBehaviour
+    private Rigidbody _rb;
+    private Controls _controls;
+
+    private void Awake()
     {
-        public const float SPEED_MULT = 5F;
+        _controls = new Controls();
+        _controls.AnyPlayer.Move.performed += context => Move();
 
-        private Rigidbody m_rb;
-        private Controls m_controls;
+        _rb = GetComponent<Rigidbody>();
+    }
 
-        private void Awake()
-        {
-            m_controls = new Controls();
-            m_controls.AnyPlayer.Move.performed += context => Move();
+    private void OnEnable() => _controls.Enable();
 
-            m_rb = GetComponent<Rigidbody>();
-        }
+    private void OnDisable() => _controls.Disable();
 
-        private void OnEnable() => m_controls.Enable();
-
-        private void OnDisable() => m_controls.Disable();
-
-        private void Update()
-        {
-            Move();
-        }
+    private void Update()
+    {
+        Move();
+    }
 
 #if !IS_GROUNDED
-        private void Move()
+    private void Move()
+    {
+        // 0 in new velocity might delay movements in Y axes
+        var dir2 = _controls.AnyPlayer.Move.ReadValue<Vector2>();
+
+        if (dir2 != Vector2.zero)
         {
-            {
-                // 0 in new velocity might delay movements in Y axes
-                Vector2 dir2 = m_controls.AnyPlayer.Move.ReadValue<Vector2>();
-                Vector3 dir3 = new Vector3(dir2.x, 0, dir2.y);
+            var dir3 = new Vector3(dir2.x, 0, dir2.y);
+                
+            // heading
+            transform.rotation = Quaternion.LookRotation(dir3);
 
-                // heading
-                transform.rotation = Quaternion.LookRotation(dir3);
-
-                m_rb.velocity = dir3 * SPEED_MULT;
-            }
+            _rb.velocity = dir3 * SpeedMultiplier;
         }
+        else
+        {
+            _rb.velocity = Vector3.zero;
+        }
+    }
 #else
         private bool m_isGrounded = false;
 
@@ -77,5 +81,4 @@ namespace InputSystem
             }
         }
 #endif
-    }
 }
