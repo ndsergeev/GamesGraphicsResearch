@@ -6,21 +6,33 @@ using UnityEngine;
 public class ControlledGhost : ControlledPlayer
 {
     private Rigidbody _rb;
-    private Controls _controls;
 
-    private void Awake()
+    #region InitSingleton
+
+    private Controls _controls;
+    
+    private void OnEnable() => _controls.Enable();
+    private void OnDisable() => _controls.Disable();
+
+    private void InitControls()
     {
         _controls = new Controls();
         _controls.AnyPlayer.Move.performed += context => Move();
-
-        _rb = GetComponent<Rigidbody>();
-
-        AddToSubject();
     }
 
-    private void OnEnable() => _controls.Enable();
+    #endregion
+    
 
-    private void OnDisable() => _controls.Disable();
+    private void Awake()
+    {
+        InitControls();
+    }
+
+    private void Start()
+    {
+        AddToSubject();
+        _rb = GetComponent<Rigidbody>();
+    }
 
     #region Observed
 
@@ -41,7 +53,7 @@ public class ControlledGhost : ControlledPlayer
     private void Move()
     {
         var dir2 = _controls.AnyPlayer.Move.ReadValue<Vector2>();
-
+        
         Navigation.Move(_rb, transform, dir2);
     }
     
@@ -58,18 +70,16 @@ public class ControlledGhost : ControlledPlayer
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            _isGrounded = true;
-        }
+        if (!collision.gameObject.CompareTag("Ground")) return;
+        
+        _isGrounded = true;
     }
-
+    
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            _isGrounded = false;
-        }
+        if (!collision.gameObject.CompareTag("Ground")) return;
+        
+        _isGrounded = false;
     }
 #endif
 }
