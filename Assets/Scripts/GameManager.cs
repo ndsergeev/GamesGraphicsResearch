@@ -2,28 +2,28 @@
 using Core.Observer;
 using UnityEngine;
 
-public class Manager : MonoBehaviour, ISubject
+public class GameManager : MonoBehaviour, ISubject
 {
-    #region SingletonImplementation
+    #region Singleton Implementation
 
-    private static Manager _instance;
-    public static Manager Instance { get { return _instance; } }
+    private static GameManager _gameGameManagerInstance;
+    public static GameManager GameGameManagerInstance { get { return _gameGameManagerInstance; } }
 
     private void InitSingleton()
     {
-        if (_instance != null && _instance != this)
+        if (_gameGameManagerInstance != null && _gameGameManagerInstance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        _instance = this;
+        _gameGameManagerInstance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     #endregion
 
-    #region SubjectImplementation
+    #region Subject Implementation
 
     private List<IObserver> _observers;
 
@@ -53,11 +53,8 @@ public class Manager : MonoBehaviour, ISubject
 
     #endregion
 
-    public GameObject controlledPrefab;
-    public GameObject mlPrefab;
-    
-    private static float _timer;
-    private const float TimeLimit = 3f;
+    public Camera mainCamera;
+    public List<GameObject> prefabs;
 
     // ToDo: double-check is there a need to use these below
     // private List<ControlledPlayer> _controlledPlayers;
@@ -71,34 +68,25 @@ public class Manager : MonoBehaviour, ISubject
         SpawnPlayers();
     }
     
-    #region SpawnPlayers
+    #region Spawn Players
 
     private void SpawnPlayers()
     {
-        // ToDo: make it to be list of GameObject or list of lists of GO
-        Instantiate(controlledPrefab, Vector3.zero, Quaternion.identity, Instance.transform);
+        if (prefabs.Count < 1) return;
         
-        Instantiate(mlPrefab, Vector3.forward * 3, Quaternion.identity, Instance.transform);
+        foreach (var prefab in prefabs)
+        {
+            Instantiate(prefab, Vector3.zero, Quaternion.identity, GameGameManagerInstance.transform);    
+        }
     }
 
     #endregion
 
     private void Start()
     {
-        Debug.Log("Observer Count: " + _observers.Count.ToString());
+        // Double check all observers initialised properly, REMOVE when confident
+        // Debug.Log("Observer Count: " + _observers.Count.ToString());
         
         NotifyObservers();
-    }
-
-    private void Update()
-    {
-        // if (_timer > TimeLimit)
-        // {
-        //     // ToDo: example to notify two types of agents every <_timer> seconds
-        //     NotifyObservers();
-        //     _timer = 0f;
-        // }
-        //
-        // _timer += Time.deltaTime;
     }
 }

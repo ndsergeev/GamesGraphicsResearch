@@ -1,20 +1,15 @@
-﻿using System;
-using Core.Observer;
+﻿using Core.Observer;
 using Unity.MLAgents;
-using UnityEngine;
 
 namespace Player
 {
     public abstract class MLPlayer : Agent, IObserver
     {
-        protected static readonly Vector3 Forward = Vector3.forward;
-        protected static readonly Vector3 Back = -Vector3.forward;
-        protected static readonly Vector3 Right = Vector3.right;
-        protected static readonly Vector3 Left = -Vector3.right;
-        
+        protected PlayerType PlayerType;
+        protected const string Tag = "Predator";
         public virtual void AddToSubject()
         {
-            Manager.Instance.AddObserver(this);
+            GameManager.GameGameManagerInstance.AddObserver(this);
         }
 
         public abstract void HandleOnNotify();

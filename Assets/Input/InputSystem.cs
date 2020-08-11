@@ -17,7 +17,7 @@ namespace InputSystem
     ""name"": ""InputSystem"",
     ""maps"": [
         {
-            ""name"": ""AnyPlayer"",
+            ""name"": ""PCPlayer"",
             ""id"": ""a121fc29-9c44-4bbc-afcb-635c477a7fd7"",
             ""actions"": [
                 {
@@ -86,6 +86,77 @@ namespace InputSystem
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""XBOXPlayer"",
+            ""id"": ""f6f8ad28-fe78-44d8-aa08-e9aa198f0e3f"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8efd88f-7d15-4ba4-ad33-19248c409e03"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Move"",
+                    ""id"": ""14ee752e-f468-471d-8456-e40a5a5ba21a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d5407878-11ba-4fbd-9caf-f7c5c6dbdd02"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9d069540-384e-4f87-a4d4-ec28626a9df8"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""51a2c2e8-feac-405f-8fa5-c2c046f652f6"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4352fba2-8706-409a-b5de-37f28e4f64b6"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -107,9 +178,12 @@ namespace InputSystem
         }
     ]
 }");
-            // AnyPlayer
-            m_AnyPlayer = asset.FindActionMap("AnyPlayer", throwIfNotFound: true);
-            m_AnyPlayer_Move = m_AnyPlayer.FindAction("Move", throwIfNotFound: true);
+            // PCPlayer
+            m_PCPlayer = asset.FindActionMap("PCPlayer", throwIfNotFound: true);
+            m_PCPlayer_Move = m_PCPlayer.FindAction("Move", throwIfNotFound: true);
+            // XBOXPlayer
+            m_XBOXPlayer = asset.FindActionMap("XBOXPlayer", throwIfNotFound: true);
+            m_XBOXPlayer_Move = m_XBOXPlayer.FindAction("Move", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -156,29 +230,29 @@ namespace InputSystem
             asset.Disable();
         }
 
-        // AnyPlayer
-        private readonly InputActionMap m_AnyPlayer;
-        private IAnyPlayerActions m_AnyPlayerActionsCallbackInterface;
-        private readonly InputAction m_AnyPlayer_Move;
-        public struct AnyPlayerActions
+        // PCPlayer
+        private readonly InputActionMap m_PCPlayer;
+        private IPCPlayerActions m_PCPlayerActionsCallbackInterface;
+        private readonly InputAction m_PCPlayer_Move;
+        public struct PCPlayerActions
         {
             private @Controls m_Wrapper;
-            public AnyPlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_AnyPlayer_Move;
-            public InputActionMap Get() { return m_Wrapper.m_AnyPlayer; }
+            public PCPlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_PCPlayer_Move;
+            public InputActionMap Get() { return m_Wrapper.m_PCPlayer; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(AnyPlayerActions set) { return set.Get(); }
-            public void SetCallbacks(IAnyPlayerActions instance)
+            public static implicit operator InputActionMap(PCPlayerActions set) { return set.Get(); }
+            public void SetCallbacks(IPCPlayerActions instance)
             {
-                if (m_Wrapper.m_AnyPlayerActionsCallbackInterface != null)
+                if (m_Wrapper.m_PCPlayerActionsCallbackInterface != null)
                 {
-                    @Move.started -= m_Wrapper.m_AnyPlayerActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_AnyPlayerActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_AnyPlayerActionsCallbackInterface.OnMove;
+                    @Move.started -= m_Wrapper.m_PCPlayerActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_PCPlayerActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_PCPlayerActionsCallbackInterface.OnMove;
                 }
-                m_Wrapper.m_AnyPlayerActionsCallbackInterface = instance;
+                m_Wrapper.m_PCPlayerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Move.started += instance.OnMove;
@@ -187,7 +261,40 @@ namespace InputSystem
                 }
             }
         }
-        public AnyPlayerActions @AnyPlayer => new AnyPlayerActions(this);
+        public PCPlayerActions @PCPlayer => new PCPlayerActions(this);
+
+        // XBOXPlayer
+        private readonly InputActionMap m_XBOXPlayer;
+        private IXBOXPlayerActions m_XBOXPlayerActionsCallbackInterface;
+        private readonly InputAction m_XBOXPlayer_Move;
+        public struct XBOXPlayerActions
+        {
+            private @Controls m_Wrapper;
+            public XBOXPlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_XBOXPlayer_Move;
+            public InputActionMap Get() { return m_Wrapper.m_XBOXPlayer; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(XBOXPlayerActions set) { return set.Get(); }
+            public void SetCallbacks(IXBOXPlayerActions instance)
+            {
+                if (m_Wrapper.m_XBOXPlayerActionsCallbackInterface != null)
+                {
+                    @Move.started -= m_Wrapper.m_XBOXPlayerActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_XBOXPlayerActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_XBOXPlayerActionsCallbackInterface.OnMove;
+                }
+                m_Wrapper.m_XBOXPlayerActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
+                }
+            }
+        }
+        public XBOXPlayerActions @XBOXPlayer => new XBOXPlayerActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -197,7 +304,11 @@ namespace InputSystem
                 return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
             }
         }
-        public interface IAnyPlayerActions
+        public interface IPCPlayerActions
+        {
+            void OnMove(InputAction.CallbackContext context);
+        }
+        public interface IXBOXPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
         }
