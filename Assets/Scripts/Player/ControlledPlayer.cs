@@ -5,10 +5,9 @@ namespace Player
 {
     public abstract class ControlledPlayer : MonoBehaviour, IObserver
     {
-        protected PlayerType PlayerType;
         public virtual void AddToSubject()
         {
-            GameManager.GameGameManagerInstance.AddObserver(this);
+            GameManager.GameManagerInstance.AddObserver(this);
         }
 
         public abstract void HandleOnNotify();

@@ -1,23 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.Observer;
+using Player;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour, ISubject
 {
     #region Singleton Implementation
 
-    private static GameManager _gameGameManagerInstance;
-    public static GameManager GameGameManagerInstance { get { return _gameGameManagerInstance; } }
+    private static GameManager _gameManagerInstance;
+    public static GameManager GameManagerInstance { get { return _gameManagerInstance; } }
 
     private void InitSingleton()
     {
-        if (_gameGameManagerInstance != null && _gameGameManagerInstance != this)
+        if (_gameManagerInstance != null && _gameManagerInstance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        _gameGameManagerInstance = this;
+        _gameManagerInstance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -54,7 +56,6 @@ public class GameManager : MonoBehaviour, ISubject
     #endregion
 
     public Camera mainCamera;
-    public List<GameObject> prefabs;
 
     // ToDo: double-check is there a need to use these below
     // private List<ControlledPlayer> _controlledPlayers;
@@ -65,28 +66,83 @@ public class GameManager : MonoBehaviour, ISubject
         InitSingleton();
         InitSubject();
 
-        SpawnPlayers();
+        SpawnAllPlayers();
+    }
+
+    private void Update()
+    {
+        if (_preyCount < nPreys) { return; }
+        // NotifyObservers();
+        foreach (var pred in _mlPlayers)
+        {
+            pred.gameObject.SetActive(true);
+            pred.EndEpisode();
+        }
+        ResetPreyCount();
+    }
+
+    #region Prey Counter
+    
+    private int _preyCount = 0;
+    public void ResetPreyCount()
+    {
+        _preyCount = 0;
+    }
+    public void IncrementPreyCount()
+    {
+        _preyCount++;
     }
     
+    #endregion
+    
     #region Spawn Players
+    
+    public int nPredators;
+    public int nPreys;
+    public float xOffset;
+    public float zOffset;
 
-    private void SpawnPlayers()
+    public List<GameObject> prefabs;
+    public List<GameObject> predatorCharacters;
+    public List<GameObject> preyCharacters;
+    private readonly List<MLPlayer> _mlPlayers = new List<MLPlayer>();
+    
+    private void SpawnAllPlayers()
     {
         if (prefabs.Count < 1) return;
         
-        foreach (var prefab in prefabs)
+        // init Predators
+        SpawnPlayer(prefabs[0], predatorCharacters, nPredators, zOffset, new Vector3(0,180,0));
+
+        // init Preys
+        SpawnPlayer(prefabs[1], preyCharacters, nPreys, -zOffset, new Vector3(0,0,0));
+    }
+
+    private void SpawnPlayer(GameObject ofPrefab, IReadOnlyList<GameObject> fromCharacterArray, int nPlayers, float atZOffset, Vector3 atAngle)
+    {
+        var spawnRow =  CalculateFirstNegativeOffsetXPosition(xOffset, 0f, atZOffset, nPlayers);
+        for (var i = 0; i < nPlayers; ++i)
         {
-            Instantiate(prefab, Vector3.zero, Quaternion.identity, GameGameManagerInstance.transform);    
+            var prefab = Instantiate(ofPrefab,
+                spawnRow,
+                Quaternion.Euler(atAngle),
+                GameManagerInstance.transform);
+            var player = Instantiate(fromCharacterArray[i],
+                spawnRow,
+                Quaternion.Euler(atAngle),
+                prefab.transform);
+            var component = prefab.GetComponent<MLPlayer>();
+            component.SetResetPosition(spawnRow);
+            _mlPlayers.Add(component);
+            spawnRow.x += xOffset;
         }
     }
 
-    #endregion
-
-    private void Start()
+    private static Vector3 CalculateFirstNegativeOffsetXPosition(float xOffset, float yOffset, float zOffset, int n)
     {
-        // Double check all observers initialised properly, REMOVE when confident
-        // Debug.Log("Observer Count: " + _observers.Count.ToString());
-        
-        NotifyObservers();
+        var newXOffset = -xOffset * (n - 1) / 2;
+        return new Vector3(newXOffset, yOffset, zOffset);
     }
+
+    #endregion
 }

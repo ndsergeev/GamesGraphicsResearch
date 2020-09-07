@@ -19,26 +19,26 @@ namespace Player
 
         private const float SpeedMultiplier = 5f;
 
-        public static void Move(Rigidbody rb, Transform transform, Vector2 direction2)
+        public static void Move(Rigidbody rb, Transform transform, Vector2 direction2, float speed = SpeedMultiplier)
         {
             var direction3 = new Vector3(direction2.x, 0, direction2.y);
         
-            AddVelocity(rb, transform, direction3);
+            AddVelocity(rb, transform, direction3, speed);
         }
     
-        public static void Move(Rigidbody rb, Transform transform, Vector3 direction3)
+        public static void Move(Rigidbody rb, Transform transform, Vector3 direction3, float speed = SpeedMultiplier)
         {
-            AddVelocity(rb, transform, direction3);
+            AddVelocity(rb, transform, direction3, speed);
         }
     
-        private static void AddVelocity(Rigidbody rb, Transform transform, Vector3 direction3)
+        private static void AddVelocity(Rigidbody rb, Transform transform, Vector3 direction3, float speed)
         {
             if (direction3 != Vector3.zero)
             {
                 // heading
                 transform.rotation = Quaternion.LookRotation(direction3);
 
-                rb.velocity = direction3 * SpeedMultiplier;
+                rb.velocity = direction3 * speed;
             } else {
                 rb.velocity = Vector3.zero;
             }
@@ -49,7 +49,7 @@ namespace Player
         #region ML Discrete and Contnuous Action Space Movement
 
 #if !CONTINUOUS_ACTION_SPACE
-        public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act)
+        public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act, float speed = SpeedMultiplier)
         {
             // Discrete Action Space Move:
         
@@ -58,45 +58,45 @@ namespace Player
             switch (action)
             {
                 case 1:
-                    Move(rb, transform, Forward);
+                    Move(rb, transform, Forward, speed);
                     break;
                 case 2:
-                    Move(rb, transform, Back);
+                    Move(rb, transform, Back, speed);
                     break;
                 case 3:
-                    Move(rb, transform, Right);
+                    Move(rb, transform, Right, speed);
                     break;
                 case 4:
-                    Move(rb, transform, Left);
+                    Move(rb, transform, Left, speed);
                     break;
                 /* Note:
                  * these 4 are options to move in 4 more directions
                  * for the training the number can be controlled via
                  * Unity's GUI in Action Vector array size 4 or 8 */
                 case 5:
-                    Move(rb, transform, FAndL);
+                    Move(rb, transform, FAndL, speed);
                     break;
                 case 6:
-                    Move(rb, transform, FAndR);
+                    Move(rb, transform, FAndR, speed);
                     break;
                 case 7:
-                    Move(rb, transform, BAndL);
+                    Move(rb, transform, BAndL, speed);
                     break;
                 case 8:
-                    Move(rb, transform, BAndR);
+                    Move(rb, transform, BAndR, speed);
                     break;
             }
         }
 #else
-    public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act)
+    public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act, float speed=SpeedMultiplier)
     {
         // Continuous Action Space Move:
         // act [0] back - forward, -1 -> 1
         // act [1] left - right  , -1 -> 1
         
-        var direction3 = new Vector3(act[0], 0, act[1]);
+        var direction3 = new Vector3(act[0], 0, act[1]).normalized;
         
-        Navigation.Move(_rb, transform, direction3);
+        Move(rb, transform, direction3, speed);
     }
 #endif
 
