@@ -53,8 +53,11 @@ public class MLRaySharedBrain : MLPlayer
     
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground")) { return; }
+        
         // Enemy tag is same as opposite tag or not same as mine
-        var mlPlayer = collision.gameObject.GetComponent<MLPlayer>();
+        var mlPlayer = collision.gameObject.GetComponent<MLRaySharedBrain>();
+
         if (enemyType == mlPlayer.playerType)
         {
             if (playerType != PlayerType.Prey) return;

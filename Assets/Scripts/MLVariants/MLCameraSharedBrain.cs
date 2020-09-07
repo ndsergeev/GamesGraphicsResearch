@@ -59,6 +59,8 @@ public class MLCameraSharedBrain : MLPlayer
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground")) { return; }
+        
         // Enemy tag is same as opposite tag or not same as mine
         var mlPlayer = collision.gameObject.GetComponent<MLPlayer>();
         if (enemyType == mlPlayer.playerType)

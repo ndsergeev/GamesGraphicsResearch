@@ -44,6 +44,8 @@ public class MLRayPrey : MLPlayer
     
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground")) { return; }
+        
         // Prey
         var mlPlayer = collision.gameObject.GetComponent<MLPlayer>();
         if (enemyType == mlPlayer.playerType)
