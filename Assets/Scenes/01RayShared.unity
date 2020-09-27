@@ -132,7 +132,7 @@ PrefabInstance:
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.7
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
@@ -592,7 +592,7 @@ PrefabInstance:
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
@@ -602,7 +602,7 @@ PrefabInstance:
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2618399639960232907, guid: 0c088e4ef54984062b96d1388e76079c,
         type: 3}
@@ -1294,7 +1294,7 @@ PrefabInstance:
     - target: {fileID: 2618399639960232907, guid: 34333e1da21414098a48a789f772f4da,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 2618399639960232907, guid: 34333e1da21414098a48a789f772f4da,
         type: 3}
@@ -2424,6 +2424,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2734773117444520910, guid: 682eb09a8633946c88cc87e0a2ed4965,
+        type: 3}
+      propertyPath: m_Text
+      value: Shared
+      objectReference: {fileID: 0}
     - target: {fileID: 5183004510677982812, guid: 682eb09a8633946c88cc87e0a2ed4965,
         type: 3}
       propertyPath: prefabs.Array.size
@@ -2766,7 +2771,7 @@ PrefabInstance:
     - target: {fileID: 5183004510677982812, guid: 682eb09a8633946c88cc87e0a2ed4965,
         type: 3}
       propertyPath: nPreys
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5183004510677982812, guid: 682eb09a8633946c88cc87e0a2ed4965,
         type: 3}
@@ -2776,7 +2781,7 @@ PrefabInstance:
     - target: {fileID: 5183004510677982812, guid: 682eb09a8633946c88cc87e0a2ed4965,
         type: 3}
       propertyPath: zOffset
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5183004510677982812, guid: 682eb09a8633946c88cc87e0a2ed4965,
         type: 3}

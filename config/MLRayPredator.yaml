@@ -1,6 +1,6 @@
-# HERE IS NO SELF PLAY
+# PREDATOR ONLY
 behaviors:
-    MLRayShared:
+    MLRayPredator:
         trainer_type: ppo
         hyperparameters:
             batch_size: 2048
@@ -21,7 +21,7 @@ behaviors:
                 gamma: 0.99
                 strength: 1.0
         keep_checkpoints: 5
-        max_steps: 1.0e8
+        max_steps: 5.0e6
         time_horizon: 1000
         summary_freq: 2500
         threaded: true

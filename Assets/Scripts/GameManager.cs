@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using Core.Observer;
 using Player;
+using Unity.MLAgents;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour, ISubject
 {
     #region Singleton Implementation
 
-    private static GameManager _gameManagerInstance;
-    public static GameManager GameManagerInstance { get { return _gameManagerInstance; } }
+    public static GameManager Instance { get; private set; }
 
     private void InitSingleton()
     {
-        if (_gameManagerInstance != null && _gameManagerInstance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        _gameManagerInstance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -67,30 +67,58 @@ public class GameManager : MonoBehaviour, ISubject
         InitSubject();
 
         SpawnAllPlayers();
+        
+        // Helps to manually reset the environment 
+        // Academy.Instance.AutomaticSteppingEnabled = false;
+        // Academy.Instance.EnvironmentParameters
     }
-
+    
     private void Update()
     {
-        if (_preyCount < nPreys) { return; }
+        ResetEnvironment();
+        
         // NotifyObservers();
-        foreach (var pred in _mlPlayers)
-        {
-            pred.gameObject.SetActive(true);
-            pred.EndEpisode();
-        }
-        ResetPreyCount();
     }
 
-    #region Prey Counter
+    #region ML Agent
+
+    public float timeToReset = 128;
+    private float _resetEnvironmentTimer;
     
-    private int _preyCount = 0;
-    public void ResetPreyCount()
+    private void ResetEnvironment()
     {
-        _preyCount = 0;
+        if (_resetEnvironmentTimer > timeToReset || PreyCount >= nPreys) {
+        
+            foreach (var player in _mlPlayers)
+            {
+                player.gameObject.SetActive(true);
+                player.EndEpisode();
+            }
+            
+            Academy.Instance.EnvironmentStep();
+        
+            ResetPreyCount();
+
+            _resetEnvironmentTimer = 0;
+        }
+
+        _resetEnvironmentTimer += Time.deltaTime;
     }
+
+    #endregion
+
+    #region Prey Counter
+
+    public int PreyCount { get; private set; }
+
+    private void ResetPreyCount()
+    {
+        PreyCount = 0;
+    }
+    
     public void IncrementPreyCount()
     {
-        _preyCount++;
+        PreyCount++;
     }
     
     #endregion
@@ -126,8 +154,10 @@ public class GameManager : MonoBehaviour, ISubject
             var prefab = Instantiate(ofPrefab,
                 spawnRow,
                 Quaternion.Euler(atAngle),
-                GameManagerInstance.transform);
-            var player = Instantiate(fromCharacterArray[i],
+                Instance.transform);
+            // player is unused because it is a child of prefab
+            // var player =
+            Instantiate(fromCharacterArray[i],
                 spawnRow,
                 Quaternion.Euler(atAngle),
                 prefab.transform);

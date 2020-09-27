@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8537762354358366168
+--- !u!114 &-2889130153615178171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,23 +16,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
-  playerType: 1
-  enemyType: 0
---- !u!114 &7118973356251186135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 885570618477803107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 2
-  TakeActionsBetweenDecisions: 1
---- !u!114 &8029477281703534863
+  playerType: 0
+  enemyType: 1
+--- !u!114 &-2004472910189775360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,15 +33,44 @@ MonoBehaviour:
   m_BrainParameters:
     VectorObservationSize: 1
     NumStackedVectorObservations: 1
-    VectorActionSize: 08000000
+    VectorActionSize: 02000000
     VectorActionDescriptions: []
-    VectorActionSpaceType: 0
+    VectorActionSpaceType: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MLRayShared
+  m_BehaviorName: MLRaySelfPlayPredator
   TeamId: 0
   m_UseChildSensors: 1
+--- !u!114 &-91491512574271566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885570618477803107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 2
+  TakeActionsBetweenDecisions: 1
+--- !u!114 &3411031234880361954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885570618477803107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 0
+  DemonstrationName: 
+  DemonstrationDirectory: 
 --- !u!114 &8616280350819375437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,20 +83,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensorPrey
+  m_SensorName: RayPerceptionSensorPredator
   m_DetectableTags:
   - Predator
   - Prey
   - Wall
-  m_RaysPerDirection: 5
-  m_MaxRayDegrees: 165
+  m_RaysPerDirection: 7
+  m_MaxRayDegrees: 160
   m_SphereCastRadius: 1
   m_RayLength: 20
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_ObservationStacks: 1
-  rayHitColor: {r: 0, g: 0.07363939, b: 1, a: 1}
+  rayHitColor: {r: 1, g: 0.76596725, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 1.5
   m_EndVerticalOffset: 1.5
@@ -92,21 +107,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5303107166200338069, guid: d67d500e99f894fa1b6b111d74792880,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -7380096699729576372, guid: fe9e469b90b024136b0c4050c507f097,
-        type: 3}
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}
       propertyPath: m_Name
-      value: PreyMLRayShared
+      value: PredatorMLRaySelfPlayContinuous
       objectReference: {fileID: 0}
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}
       propertyPath: m_TagString
-      value: Prey
+      value: Predator
       objectReference: {fileID: 0}
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}

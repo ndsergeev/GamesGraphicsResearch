@@ -17,7 +17,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
   playerType: 0
-  enemyType: 0
+  enemyType: 1
 --- !u!114 &-2004472910189775360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,7 +36,7 @@ MonoBehaviour:
     VectorActionSize: 08000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: dba3c1f9f2a7945239533a04919b068a, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MLRayShared
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor
+  m_SensorName: RayPerceptionSensorPredator
   m_DetectableTags:
   - Predator
   - Prey

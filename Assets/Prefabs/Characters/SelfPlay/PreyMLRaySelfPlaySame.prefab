@@ -50,11 +50,11 @@ MonoBehaviour:
     VectorActionSize: 08000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
-  m_Model: {fileID: 5022602860645237092, guid: dba3c1f9f2a7945239533a04919b068a, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MLRayShared
-  TeamId: 0
+  m_BehaviorName: MLRaySelfPlay
+  TeamId: 1
   m_UseChildSensors: 1
 --- !u!114 &8616280350819375437
 MonoBehaviour:
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor
+  m_SensorName: RayPerceptionSensorPredator
   m_DetectableTags:
   - Predator
   - Prey
@@ -101,7 +101,7 @@ PrefabInstance:
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}
       propertyPath: m_Name
-      value: PreyMLRayShared0Team
+      value: PreyMLRaySelfPlay
       objectReference: {fileID: 0}
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}

@@ -7,7 +7,7 @@ namespace Player
     {
         public virtual void AddToSubject()
         {
-            GameManager.GameManagerInstance.AddObserver(this);
+            GameManager.Instance.AddObserver(this);
         }
 
         public abstract void HandleOnNotify();

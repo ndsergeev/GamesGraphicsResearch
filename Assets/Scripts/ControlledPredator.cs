@@ -1,6 +1,6 @@
-﻿using InputSystem;
-using Player;
+﻿using Player;
 using UnityEngine;
+using InputSystem;
 using UnityEngine.InputSystem;
 
 public class ControlledPredator : ControlledPlayer

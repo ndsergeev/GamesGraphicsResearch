@@ -48,7 +48,7 @@ namespace Player
 
         #region ML Discrete and Contnuous Action Space Movement
 
-#if !CONTINUOUS_ACTION_SPACE
+#if CONTINUOUS_ACTION_SPACE
         public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act, float speed = SpeedMultiplier)
         {
             // Discrete Action Space Move:
@@ -90,13 +90,42 @@ namespace Player
 #else
     public static void MoveMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act, float speed=SpeedMultiplier)
     {
-        // Continuous Action Space Move:
-        // act [0] back - forward, -1 -> 1
-        // act [1] left - right  , -1 -> 1
+        /* Continuous Action Space Move:
+        act [0] back - forward, -1 -> 1
+        act [1] left - right  , -1 -> 1
+        */
         
         var direction3 = new Vector3(act[0], 0, act[1]).normalized;
         
         Move(rb, transform, direction3, speed);
+    }
+
+    public static void MoveRotateMLAgent(Rigidbody rb, Transform transform, IReadOnlyList<float> act,
+        float speed = SpeedMultiplier)
+    {
+        /* Continuous Action Space Rotate:
+        act [0] left - right  , -1 -> 1
+        Continuous Action Space Move:
+        act [1] back - forward, -1 -> 1
+        act [2] left - right  , -1 -> 1
+        */
+        
+        var rotation = transform.up * act[0];
+        transform.Rotate(rotation, Time.fixedDeltaTime * 180f);
+
+        // #1
+        // var x = act[1];
+        // var z = Mathf.Clamp01(act[2]);
+        // var direction3 = new Vector3(x, 0, z).normalized;
+        // direction3 *= speed;
+        
+        // #2
+        // var direction3 = new Vector3(act[1], 0, act[2]).normalized;
+        // direction3 *= speed;
+
+        // var direction3 = Mathf.Clamp01(act[1]) * Vector3.forward * speed;
+        var direction3 = Mathf.Clamp01(act[1]) * Vector3.forward;
+        rb.AddRelativeForce(direction3, ForceMode.VelocityChange);
     }
 #endif
 

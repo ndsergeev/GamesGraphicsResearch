@@ -47,14 +47,14 @@ MonoBehaviour:
   m_BrainParameters:
     VectorObservationSize: 1
     NumStackedVectorObservations: 1
-    VectorActionSize: 08000000
+    VectorActionSize: 02000000
     VectorActionDescriptions: []
-    VectorActionSpaceType: 0
+    VectorActionSpaceType: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MLRayShared
-  TeamId: 0
+  m_BehaviorName: MLRaySelfPlayPrey
+  TeamId: 1
   m_UseChildSensors: 1
 --- !u!114 &8616280350819375437
 MonoBehaviour:
@@ -68,13 +68,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensorPrey
+  m_SensorName: RayPerceptionSensorPredator
   m_DetectableTags:
   - Predator
   - Prey
   - Wall
-  m_RaysPerDirection: 5
-  m_MaxRayDegrees: 165
+  m_RaysPerDirection: 7
+  m_MaxRayDegrees: 160
   m_SphereCastRadius: 1
   m_RayLength: 20
   m_RayLayerMask:
@@ -101,7 +101,7 @@ PrefabInstance:
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}
       propertyPath: m_Name
-      value: PreyMLRayShared
+      value: PreyMLRaySelfPlayContinuous
       objectReference: {fileID: 0}
     - target: {fileID: 5691051362479279115, guid: d67d500e99f894fa1b6b111d74792880,
         type: 3}

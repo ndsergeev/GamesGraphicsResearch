@@ -27,7 +27,7 @@ public class MLCameraPredator : MLPlayer
         // it is the most beautiful part of ML Agent library, 
         // CameraSensor isn't a component you can use, 
         // but to get a COMPONENT you need to use CameraSensorComponent
-        GetComponent<CameraSensorComponent>().Camera = GameManager.GameManagerInstance.mainCamera;
+        GetComponent<CameraSensorComponent>().Camera = GameManager.Instance.mainCamera;
     }
 
     public override void OnEpisodeBegin()

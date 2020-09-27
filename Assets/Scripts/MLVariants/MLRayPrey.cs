@@ -54,7 +54,7 @@ public class MLRayPrey : MLPlayer
             
             // ToDo: make health system 
             collision.gameObject.SetActive(false);
-            GameManager.GameManagerInstance.IncrementPreyCount();
+            GameManager.Instance.IncrementPreyCount();
         }
         else if (playerType == mlPlayer.playerType)
         {
