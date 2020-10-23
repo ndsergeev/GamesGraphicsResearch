@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Core.Observer;
 using Player;
 using Unity.MLAgents;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour, ISubject
 {
@@ -60,7 +61,6 @@ public class GameManager : MonoBehaviour, ISubject
     // ToDo: double-check is there a need to use these below
     // private List<ControlledPlayer> _controlledPlayers;
     // private List<MLPlayer> _mlPlayers;
-
     private void Awake()
     {
         InitSingleton();
@@ -75,34 +75,31 @@ public class GameManager : MonoBehaviour, ISubject
     
     private void Update()
     {
+        ResetPickups();
         ResetEnvironment();
-        
+
         // NotifyObservers();
     }
 
     #region ML Agent
 
-    public float timeToReset = 128;
+    public float timeToResetEnv = 128;
     private float _resetEnvironmentTimer;
     
     private void ResetEnvironment()
     {
-        if (_resetEnvironmentTimer > timeToReset || PreyCount >= nPreys) {
+        _resetEnvironmentTimer -= Time.deltaTime;
+        if (_resetEnvironmentTimer > 0 && PreyCount < nPreys) return;
         
-            foreach (var player in _mlPlayers)
-            {
-                player.gameObject.SetActive(true);
-                player.EndEpisode();
-            }
-            
-            Academy.Instance.EnvironmentStep();
-        
-            ResetPreyCount();
-
-            _resetEnvironmentTimer = 0;
+        foreach (var player in MLPlayers)
+        {
+            player.gameObject.SetActive(true);
+            player.EndEpisode();
         }
-
-        _resetEnvironmentTimer += Time.deltaTime;
+            
+        Academy.Instance.EnvironmentStep();
+        ResetPreyCount();
+        _resetEnvironmentTimer = timeToResetEnv;
     }
 
     #endregion
@@ -123,7 +120,7 @@ public class GameManager : MonoBehaviour, ISubject
     
     #endregion
     
-    #region Spawn Players
+    #region Spawn MLPlayers
     
     public int nPredators;
     public int nPreys;
@@ -133,7 +130,7 @@ public class GameManager : MonoBehaviour, ISubject
     public List<GameObject> prefabs;
     public List<GameObject> predatorCharacters;
     public List<GameObject> preyCharacters;
-    private readonly List<MLPlayer> _mlPlayers = new List<MLPlayer>();
+    public readonly List<MLPlayer> MLPlayers = new List<MLPlayer>();
     
     private void SpawnAllPlayers()
     {
@@ -148,6 +145,8 @@ public class GameManager : MonoBehaviour, ISubject
 
     private void SpawnPlayer(GameObject ofPrefab, IReadOnlyList<GameObject> fromCharacterArray, int nPlayers, float atZOffset, Vector3 atAngle)
     {
+        if (nPlayers < 1) return;
+        
         var spawnRow =  CalculateFirstNegativeOffsetXPosition(xOffset, 0f, atZOffset, nPlayers);
         for (var i = 0; i < nPlayers; ++i)
         {
@@ -161,9 +160,13 @@ public class GameManager : MonoBehaviour, ISubject
                 spawnRow,
                 Quaternion.Euler(atAngle),
                 prefab.transform);
+            
             var component = prefab.GetComponent<MLPlayer>();
-            component.SetResetPosition(spawnRow);
-            _mlPlayers.Add(component);
+            if (component)
+            {
+                component.SetResetPosition(spawnRow);
+                MLPlayers.Add(component);   
+            }
             spawnRow.x += xOffset;
         }
     }
@@ -174,5 +177,33 @@ public class GameManager : MonoBehaviour, ISubject
         return new Vector3(newXOffset, yOffset, zOffset);
     }
 
+    #endregion
+
+    #region Pickups
+
+    public List<Pickup> pickups = new List<Pickup>();
+    
+    public float timeToResetPickups = 8f;
+    private float _resetPickupsTimer = 0f;
+    
+    private void ResetPickups()
+    {
+        _resetPickupsTimer -= Time.deltaTime;
+        if (_resetPickupsTimer > 0) return;
+        
+        // guarantees that all ara hidden
+        foreach (var pickup in pickups)
+        {
+            pickup.Hide();
+        }
+            
+        foreach (var pickup in pickups.Where(pickup => Random.Range(0f, 1f) < 0.4f))
+        {
+            pickup.Expose();
+        }
+
+        _resetPickupsTimer = timeToResetPickups;
+    }
+    
     #endregion
 }

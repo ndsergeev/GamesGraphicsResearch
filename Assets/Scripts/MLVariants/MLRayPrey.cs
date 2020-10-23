@@ -1,4 +1,6 @@
-﻿using Player;
+﻿using System;
+using Data.Util;
+using Player;
 using UnityEngine;
 using Unity.MLAgents.Sensors;
 
@@ -13,16 +15,22 @@ public class MLRayPrey : MLPlayer
     [SerializeField]
     private const float BigReward = 1f;
 
+    private RayPerceptionSensorComponent3D _rayPerception;
+
     #region ML Agent
     
     public override void Initialize()
     {
         playerType = PlayerType.Prey;
         enemyType = playerType == PlayerType.Prey ? PlayerType.Predator : PlayerType.Prey;
-        Speed = playerType == PlayerType.Prey ? 5.0f : 5.5f;
+        Speed = playerType == PlayerType.Prey ? 7.5f : 8.0f;
         
         _rb = GetComponent<Rigidbody>();
+        _rayPerception = GetComponent<RayPerceptionSensorComponent3D>();
         
+        // _rayPerception.
+        // _rayPerception.RaySensor
+
         AddToSubject();
     }
 
