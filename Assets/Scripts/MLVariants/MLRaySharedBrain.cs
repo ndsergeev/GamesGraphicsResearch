@@ -8,15 +8,6 @@ public class MLRaySharedBrain : MLPlayer
 {
     // ToDo: Call function based on the action space
     // private BehaviorParameters _behaviorParameters;
-    
-    private Rigidbody _rb;
-    
-    [SerializeField]
-    private const float TinyReward = 0.002f;
-    // [SerializeField]
-    // private const float MidReward = 0.4f;
-    [SerializeField]
-    private const float BigReward = 2f;
 
     #region ML Agent
     
@@ -24,7 +15,7 @@ public class MLRaySharedBrain : MLPlayer
     {
         // ToDo: Call function based on the action space 
         // _behaviorParameters = GetComponent<BehaviorParameters>();
-        _rb = GetComponent<Rigidbody>();
+        Rb = GetComponent<Rigidbody>();
         
         AddToSubject();
         
@@ -46,7 +37,7 @@ public class MLRaySharedBrain : MLPlayer
     public override void OnActionReceived(float[] vectorAction)
     {
         // Navigation.MoveMLAgent(_rb, transform, vectorAction, Speed);
-        Navigation.MoveRotateMLAgent(_rb, transform, vectorAction, Speed);
+        Navigation.MoveRotateMLAgent(Rb, transform, vectorAction, Speed);
         
         // punish for being inactive a predator and reward a pray for surviving
         if (playerType == PlayerType.Predator)
@@ -89,7 +80,7 @@ public class MLRaySharedBrain : MLPlayer
         
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AddReward(-BigReward/2);
+            AddReward(-HugeReward/2);
             return;
         }
         
@@ -98,20 +89,20 @@ public class MLRaySharedBrain : MLPlayer
 
         if (playerType == collidedMLPlayer.playerType)
         {
-            AddReward(-BigReward/6);
+            AddReward(-HugeReward/6);
         }
         else if (enemyType == collidedMLPlayer.playerType)
         {
             if (playerType == PlayerType.Predator)
             {
-                AddReward(BigReward);
+                AddReward(HugeReward);
             }
             else
             {
                 // Prey, because enum has two options
                 // ToDo: make health system 
                 GameManager.Instance.IncrementPreyCount();
-                AddReward(-BigReward-BigReward); // double negative reward...
+                AddReward(-HugeReward-HugeReward); // double negative reward...
                 gameObject.SetActive(false);
             }
         }

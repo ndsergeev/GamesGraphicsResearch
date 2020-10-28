@@ -9,6 +9,7 @@ TagManager:
   - Prey
   - Wall
   - Throwable
+  - Pickup
   layers:
   - Default
   - TransparentFX

@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6768518012723400726}
   - component: {fileID: 2314294164299681006}
+  - component: {fileID: -8024398714696673}
   m_Layer: 0
-  m_Name: Spawner
-  m_TagString: Untagged
+  m_Name: Pickup
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,3 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemToSpawn: {fileID: 8154574314074383108, guid: 84007a51f3d5349ba9e871373c103b93,
     type: 3}
+--- !u!136 &-8024398714696673
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4982343816832632802}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

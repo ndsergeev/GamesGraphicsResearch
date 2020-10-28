@@ -448,8 +448,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f676210bccc734479a0a16b1e3dbeb8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 512
-  brushSize: 10
+  threshold: 5000
+  resolution: 128
+  closePixels: 4
   cPlayers:
   - {fileID: 1514379928}
 --- !u!1001 &436509466
