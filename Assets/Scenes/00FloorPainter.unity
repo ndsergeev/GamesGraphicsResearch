@@ -448,9 +448,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f676210bccc734479a0a16b1e3dbeb8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  threshold: 5000
+  renderTexture: 1
+  autoThreshold: 1
+  threshold: 4000
   resolution: 128
-  closePixels: 4
+  closePixels: 7
   cPlayers:
   - {fileID: 1514379928}
 --- !u!1001 &436509466
