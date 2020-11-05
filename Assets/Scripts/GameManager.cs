@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour, ISubject
             pickup.Hide();
         }
             
-        foreach (var pickup in pickups.Where(pickup => Random.Range(0f, 1f) < 0.4f))
+        foreach (var pickup in pickups.Where(pickup => Random.Range(0f, 1f) < 0.5f))
         {
             pickup.Expose();
         }

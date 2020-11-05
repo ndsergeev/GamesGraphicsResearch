@@ -1,6 +1,4 @@
-﻿using System;
-using Data.Util;
-using Player;
+﻿using Player;
 using UnityEngine;
 using Unity.MLAgents.Sensors;
 

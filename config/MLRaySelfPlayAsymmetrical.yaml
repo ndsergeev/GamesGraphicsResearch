@@ -15,7 +15,10 @@ behaviors:
             normalize: false # true
             hidden_units: 512 # 128
             num_layers: 2
-            vis_encode_type: simple
+            # vis_encode_type: simple
+            memory:
+                memory_size: 128
+                sequence_length: 64
         reward_signals:
             extrinsic:
                 gamma: 0.99
@@ -27,7 +30,7 @@ behaviors:
         threaded: true
         self_play:
             save_steps: 5000000
-            team_change: 200000
+            team_change: 10000
             swap_steps: 200
             window: 10
             play_against_latest_model_ratio: 0.5
@@ -47,7 +50,10 @@ behaviors:
             normalize: false # true
             hidden_units: 512 # 128
             num_layers: 2
-            vis_encode_type: simple
+            # vis_encode_type: simple
+            memory:
+                memory_size: 128
+                sequence_length: 64
         reward_signals:
             extrinsic:
                 gamma: 0.99
@@ -59,7 +65,7 @@ behaviors:
         threaded: true
         self_play:
             save_steps: 5000000
-            team_change: 200000
+            team_change: 100000
             swap_steps: 1000
             window: 10
             play_against_latest_model_ratio: 0.5

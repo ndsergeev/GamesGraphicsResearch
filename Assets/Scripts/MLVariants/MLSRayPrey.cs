@@ -9,7 +9,15 @@ public class MLSRayPrey : MLPlayer
     private float _currentHealth = HealthMax;
     public HealthBar healthBar;
     
-    private bool _hasThrowable = false;
+    // private bool _hasThrowable = false;
+
+    private void ResetHealth()
+    {
+        if (!healthBar) return;
+        _currentHealth = HealthMax;
+        healthBar.SetMaxHealth(HealthMax);
+        healthBar.ResetHealthToMax();
+    }
     
     // ToDo: Call function based on the action space
     // private BehaviorParameters _behaviorParameters;
@@ -23,26 +31,22 @@ public class MLSRayPrey : MLPlayer
         Rb = GetComponent<Rigidbody>();
 
         AddToSubject();
-        
+
         playerType = PlayerType.Prey;
         enemyType = PlayerType.Predator;
-        Speed = playerType == PlayerType.Prey ? 0.6f : 0.65f;
-
-        if (healthBar)
-        {
-            healthBar.SetMaxHealth(HealthMax);
-        }
+        Speed = playerType == PlayerType.Prey ? 8.5f : 7.5f;
     }
 
     public override void OnEpisodeBegin()
     {
         ResetPosition();
+        ResetHealth();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(_hasThrowable);
-        sensor.AddObservation(_currentHealth/HealthMax);
+        // sensor.AddObservation(_hasThrowable);
+        sensor.AddObservation(_currentHealth / HealthMax);
     }
 
     public override void OnActionReceived(float[] vectorAction)
@@ -51,7 +55,7 @@ public class MLSRayPrey : MLPlayer
         Navigation.MoveRotateMLAgent(Rb, transform, vectorAction, Speed);
         
         var gameManager = GameManager.Instance;
-        if (gameManager.PreyCount < gameManager.nPreys/1.5f)
+        if (gameManager.PreyCount < gameManager.nPreys / 1.5f)
         {
             AddReward(-TinyReward);
         }
@@ -67,10 +71,13 @@ public class MLSRayPrey : MLPlayer
 
     private void OnTriggerEnter(Collider trigger)
     {
-        if (!trigger.gameObject.CompareTag("Pickup") || _hasThrowable) return;
+        // if (!trigger.gameObject.CompareTag("Pickup") || _hasThrowable) return;
+        if (!trigger.gameObject.CompareTag("Pickup") || Math.Abs(_currentHealth - HealthMax) < 0.5f) return;
         
         trigger.gameObject.GetComponent<Pickup>().Hide();
-        _hasThrowable = true;
+        // _hasThrowable = true;
+        _currentHealth = Mathf.Clamp(_currentHealth + 50f, 0, HealthMax);
+        healthBar.SetHealth(_currentHealth);
         
         AddReward(MidReward);
     }
@@ -81,7 +88,7 @@ public class MLSRayPrey : MLPlayer
         
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AddReward(-HugeReward/2);
+            AddReward(-HugeReward / 2);
             return;
         }
 
@@ -89,7 +96,7 @@ public class MLSRayPrey : MLPlayer
         var collidedMLPlayer = collision.gameObject.GetComponent<MLPlayer>();
         if (playerType == collidedMLPlayer.playerType)
         {
-            AddReward(-HugeReward/6);
+            AddReward(-HugeReward / 6);
             return;
         }
         
@@ -101,7 +108,7 @@ public class MLSRayPrey : MLPlayer
         
         // if no Health Points
         GameManager.Instance.IncrementPreyCount();
-        AddReward(-HugeReward-HugeReward);
+        AddReward(-HugeReward - HugeReward);
         gameObject.SetActive(false);
     }
     
@@ -109,7 +116,7 @@ public class MLSRayPrey : MLPlayer
     // {
     //     if (collision.gameObject.CompareTag("Wall"))
     //     {
-    //         AddReward(-TinyReward*2);
+    //         AddReward(-TinyReward * 2);
     //     }
     // }
     

@@ -19,7 +19,7 @@ public class MLSRayPredator : MLPlayer
         
         playerType = PlayerType.Predator;
         enemyType = PlayerType.Prey;
-        Speed = playerType == PlayerType.Prey ? 0.6f : 0.65f;
+        Speed = playerType == PlayerType.Prey ? 8.5f : 7.5f;
     }
 
     public override void OnEpisodeBegin()
@@ -50,7 +50,7 @@ public class MLSRayPredator : MLPlayer
         
         if (collision.gameObject.CompareTag("Wall"))
         {
-            AddReward(-HugeReward/2);
+            AddReward(-HugeReward / 2);
             return;
         }
         
@@ -58,7 +58,7 @@ public class MLSRayPredator : MLPlayer
         var collidedMLPlayer = collision.gameObject.GetComponent<MLPlayer>();
         if (playerType == collidedMLPlayer.playerType)
         {
-            AddReward(-HugeReward/6);
+            AddReward(-HugeReward / 6);
             return;
         }
         
