@@ -8,12 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/01RayShared.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/01RaySelfPlay.unity
     guid: 49e466c783c3f42819daa7c6545c62a9
   - enabled: 0
     path: Assets/Scenes/02RayTwoBrains.unity
     guid: ee7575b68224740659e193a2a2e042b1
+  - enabled: 1
+    path: Assets/Scenes/00FloorPainter.unity
+    guid: 0a37f727aebee4d87ab0dfcc2d153714
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 517dfb9f52f594aadab3cea370bdac6f,
       type: 2}
