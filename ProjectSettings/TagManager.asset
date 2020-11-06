@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Predator
+  - Prey
+  - Wall
+  - Throwable
+  - Pickup
   layers:
   - Default
   - TransparentFX
@@ -14,7 +19,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - CanBePerceivedByAnAgent
   - 
   - 
   - 
