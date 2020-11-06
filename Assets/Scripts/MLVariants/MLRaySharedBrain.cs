@@ -1,5 +1,4 @@
-﻿using System;
-using Player;
+﻿using Player;
 using UnityEngine;
 using Unity.MLAgents.Sensors;
 // using Unity.MLAgents.Policies;

@@ -32,7 +32,6 @@
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>MLAgent</Path>
-      <Path>Temp</Path>
       <Path>UIElementsSchema</Path>
       <Path>config</Path>
       <Path>obj</Path>

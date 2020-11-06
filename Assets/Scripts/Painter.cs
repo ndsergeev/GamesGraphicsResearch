@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Transactions;
-using Player;
 using UnityEngine;
 
 public class Painter : MonoBehaviour
